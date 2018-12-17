@@ -9,6 +9,7 @@ const newspeaker = {
         topics: [],
     },
     cssids: {},
+    voices: [],
 };
 
 // 現在の残り時間
@@ -18,6 +19,10 @@ newspeaker.start = function() {
     // 初回は即時
     self.speak();
     setInterval(function() { self.speak(); }, self.param.ms_interval);
+
+    // ボタンはいらないので非表示に
+    const bt_start = document.querySelector(self.cssids.start);
+    bt_start.classList.add("hdn");
 }
 newspeaker.speak = function() {
     const self = this;
@@ -36,10 +41,14 @@ newspeaker.speak = function() {
             self.updateRemind();
         }, self.param.ms_freq)
 
+        // 現在の音声の種類を取得
+        const voices = document.querySelector(self.cssids.voices);
+        const voice = self.voices[voices.value];
+
         // 発声
-        window.speechSynthesis.speak(
-            new SpeechSynthesisUtterance(self.data.speaktext)
-        );
+        const utt = new SpeechSynthesisUtterance(self.data.speaktext);
+        utt.voice = voice;
+        window.speechSynthesis.speak(utt);
 
         // リスト更新
         self.updateList();
@@ -50,6 +59,10 @@ newspeaker.updateRemind = function() {
 
     const vw_remind = document.querySelector(self.cssids.remind);
     self.ms_remind -= self.param.ms_freq;
+    if(self.ms_remind <= 0) {
+        // 雑な同期なので少しのズレが生じる可能性あり。それに合わせて補正。
+        self.ms_remind = 0;
+    }
     vw_remind.innerText = "（次回 " + (self.ms_remind / 1000 / 60).toString() + "分 / " + (self.param.ms_interval / 1000/ 60).toString() + "分）"; 
 }
 newspeaker.updateList = function() {
@@ -63,12 +76,36 @@ newspeaker.updateList = function() {
     for(let i = 0; i < this.data.topics.length; i++) {
         let nowdata = this.data.topics[i];
         let a = document.createElement("a");
-        a.setAttribute("href", nowdata.url);
+        a.setAttribute("href", nowdata.link);
         a.textContent = nowdata.title;
         let li = document.createElement("li");
         li.appendChild(a);
         list.appendChild(li);
     }
+}
+newspeaker.initVoiceList = function() {
+    const self = this;
+    self.voices = window.speechSynthesis.getVoices();
+    const sel = document.querySelector(self.cssids.voices);
+
+    // 要素を削除
+    while (sel.firstChild) { 
+        sel.removeChild(list.firstChild);
+    }
+
+    // option追加
+    for(let i = 0; i < self.voices.length; i++) {
+        let nowdata = self.voices[i];
+        let opt = document.createElement("option");
+        opt.setAttribute("value", i);
+        opt.textContent = nowdata.name + "(" + nowdata.lang + ")";
+        sel.appendChild(opt);
+    }
+
+    // googleの音声
+    // sel.value = 57;
+
+    sel.classList.remove("hdn");
 }
 newspeaker.init = function(cssids) {
     const self = this;
@@ -77,10 +114,17 @@ newspeaker.init = function(cssids) {
 
     // 前回の再生が残っているかもしれないので必ずcancel
     window.speechSynthesis.cancel();
-    const bt_start = document.querySelector(self.cssids.start);
-    bt_start.addEventListener("click", function() { 
-        self.start();
-    });
 
-    const sec_freq = 1000;
+
+        // 少し時間を置かないとvoicesが取れないみたいなのでちょっと待つ
+    setTimeout(function() {
+        self.initVoiceList();
+
+        // その後、開始ボタンの設定
+        const bt_start = document.querySelector(self.cssids.start);
+        bt_start.addEventListener("click", function() { 
+            self.start();
+        });
+        bt_start.classList.remove("hdn");
+    }, 1000);
 }
