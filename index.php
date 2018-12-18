@@ -20,39 +20,13 @@
         src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="./newspeaker.js"></script>
-    <script type="text/babel" src="./reacttest.js"></script>
+    <script type="text/babel" src="./newspeaker.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
 </head>
 
 <body id="body">
-
-<?php
-$path = __DIR__ . "/ytopics.json";
-$json = file_get_contents($path);
-$data = json_decode($json);
-?>
-<script type="text/javascript">
-    window.addEventListener("load", function() {
-        newspeaker.init({
-            start: "#start", 
-            remind: "#remind", 
-            topics: "#topics",
-            voices: "#voices",
-        });
-    });
-</script>
-
-    <div id="info" class="container">
-        <button id="start" class="hdn btn btn-info">start</button>
-        <select id="voices" class="hdn"></select>
-        <span id="remind"></span>
-    </div>
-    <ol id="topics">
-    </ol>
-
-    <div id="reacttest"></div>
+    <div id="newspeaker"></div>
 </body>
 
 </html>
