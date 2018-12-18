@@ -4,6 +4,7 @@ class Newslist extends React.Component {
         this.state = {
             history: [],
             voices: [],
+            topicUrls: [],
         };
         // This binding is necessary to make `this` work in the callback
         this.startService = this.startService.bind(this);
@@ -14,6 +15,22 @@ class Newslist extends React.Component {
         jQuery.ajax({
             url: "./ytopics.json",
         }).then((data) => {
+            // topic_urlsを更新
+            const topicUrls = this.state.topicUrls;
+            for(let i = 0; i < data.topics.length; i++) {
+                const topic = data.topics[i];
+                if(topicUrls.indexOf(topic.link) < 0) {
+                    // 新しいURLなのでpushしてnewタグを付与
+                    topicUrls.push(topic.link);
+                    data.topics[i].arrival = true;
+                } else {
+                    data.topics[i].arrival = false;
+                }
+            }
+            this.setState({
+                topicUrls: topicUrls
+            });
+
             // データをpush。表示を更新
             const now = new Date();
             const history = this.state.history;
@@ -45,13 +62,17 @@ class Newslist extends React.Component {
     startService() {
         this.updateTopic();
         setInterval(() => this.updateTopic(), 60 * 60 * 1000);
+        // setInterval(() => this.updateTopic(), 3 * 60 * 1000);
     }
 
     render() {
         const ols = this.state.history.map((hist, indexol) => {
             const lis = hist.news.topics.map((topic, index) => {
+                console.log(topic.title);
+                console.log(topic.arrival)
                 return (
-                    <li key={"ol" + indexol + "li" + index}>
+                    <li class="topic" key={"ol" + indexol + "li" + index}>
+                        {topic.arrival && <span><span class="tag is-warning">new</span>&nbsp;</span>　}
                         <a target="_blank" href={topic.link}>
                         {topic.title}
                         </a>
@@ -69,7 +90,7 @@ class Newslist extends React.Component {
                         </div>
                         <div class="card-content">
                             <div class="content">
-                                <ol >
+                                <ol class="topics">
                                     {lis}
                                 </ol>
                             </div>
@@ -90,7 +111,7 @@ class Newslist extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div class="columns is-multiline">
+                <div id="news" class="columns is-multiline">
                     {ols}
                 </div>
             </div>
