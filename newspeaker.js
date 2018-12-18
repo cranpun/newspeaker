@@ -17,10 +17,11 @@ class Newslist extends React.Component {
             // データをpush。表示を更新
             const now = new Date();
             const history = this.state.history;
-            history.unshift({
+            const news = {
                 news: data,
                 updated_at: now.toLocaleTimeString()
-            });
+            };
+            history.unshift(news);
             this.setState({history: history});
 
             // // 発声
@@ -43,8 +44,7 @@ class Newslist extends React.Component {
 
     startService() {
         this.updateTopic();
-        //setInterval(() => this.updateTopic(), 60 * 60 * 1000);
-        setInterval(() => this.updateTopic(), 5 * 60 * 1000);
+        setInterval(() => this.updateTopic(), 60 * 60 * 1000);
     }
 
     render() {
@@ -60,20 +60,39 @@ class Newslist extends React.Component {
             });
 
             return (
-                <div key={"ol" + indexol}>
-                    <h2>updated_at : {hist.updated_at}</h2>
-                    <ol >
-                        {lis}
-                    </ol>
+                <div key={"ol" + indexol} class="column is-one-third">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-title">
+                                updated_at : {hist.updated_at}
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="content">
+                                <ol >
+                                    {lis}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         });
         return (
-            <div id="reactcomp">
-                <div>
-                    <button onClick={this.startService}>start</button>
+            <div id="reactcomp" class="container">
+                <div class="columns">
+                    <div class="column">
+                        <button class="button is-primary is-outlined" onClick={this.startService}>start</button>
+                    </div>
+                    <div class="column">
+                        <div class="tag is-info">
+                            {this.state.history.length}ニュース
+                        </div>
+                    </div>
                 </div>
-                {ols}
+                <div class="columns is-multiline">
+                    {ols}
+                </div>
             </div>
         );
     }
