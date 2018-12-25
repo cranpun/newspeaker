@@ -68,8 +68,8 @@ class Newslist extends React.Component {
     render() {
         const ols = this.state.history.map((hist, indexol) => {
             const lis = hist.news.topics.map((topic, index) => {
-                console.log(topic.title);
-                console.log(topic.arrival)
+                // console.log(topic.title);
+                // console.log(topic.arrival)
                 return (
                     <li class="topic" key={"ol" + indexol + "li" + index}>
                         {topic.arrival && <span><span class="tag is-warning">new</span>&nbsp;</span>　}
