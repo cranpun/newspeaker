@@ -29,8 +29,14 @@ $adjs = [
         "replace" => $space,
     ],
     [
-        "search" => "?",
+        "search" => "\?",
         "replace" => "?" . $space,
+    ],
+];
+$viewrep = [
+    [
+        "search" => "\&amp;",
+        "replace" => $space . "＆" . $space,
     ],
 ];
 
@@ -38,20 +44,26 @@ $topics = [];
 $speaktext = count($items) . "件のニュースです";
 foreach($items as $pos => $item) {
     $title = $item->get_title();
+
+    // 見栄えの調整
+    foreach($viewrep as $r) {
+        $title = mb_ereg_replace($r["search"], $r["replace"], $title);
+    }
     // 表示用のデータ
     $topics[] = [
-        "title" => $item->get_title(),
+        "title" => $title,
         "link" => $item->get_link(),
     ];
 
     // しゃべる用のデータ
     // // 空白を広げる処置
     foreach($adjs as $adj) {
-        $title = str_replace($adj["search"], $adj["replace"], $title);
+        $title = mb_ereg_replace($adj["search"], $adj["replace"], $title);
     }
 
     // // 結合
     $speaktext .= "{$space}{$space}" . ($pos + 1) . "件目{$space}{$title}";
+
 }
 
 $speaktext .= "{$space}{$space}以上、" . count($items) . "件のニュースでした。";
