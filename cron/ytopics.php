@@ -36,7 +36,7 @@ $adjs = [
 $viewrep = [
     [
         "search" => "\&amp;",
-        "replace" => $space . "＆" . $space,
+        "replace" =>  "＆",
     ],
 ];
 
