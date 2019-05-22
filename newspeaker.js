@@ -54,6 +54,8 @@ class Newslist extends React.Component {
                 // 生成したしゃべる用のテキストをしゃべる
                 const utt = new SpeechSynthesisUtterance(data.speaktext);
                 utt.voice = voices[0]; // default
+                utt.volume = 0.3;
+                utt.rate = 0.4;
                 window.speechSynthesis.speak(utt);
             }
         });
