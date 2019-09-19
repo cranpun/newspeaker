@@ -64,7 +64,8 @@ class Newslist extends React.Component {
     startService() {
         this.updateTopic();
         setInterval(() => this.updateTopic(), 60 * 60 * 1000);
-        // setInterval(() => this.updateTopic(), 3 * 60 * 1000);
+        // for test
+        // // setInterval(() => this.updateTopic(), 10 * 1000);
     }
 
     render() {
@@ -74,8 +75,7 @@ class Newslist extends React.Component {
                 // console.log(topic.arrival)
                 return (
                     <li class="topic" key={"ol" + indexol + "li" + index}>
-                        {topic.arrival && <span><span class="tag is-warning">new</span>&nbsp;</span>　}
-                        <a target="_blank" href={topic.link}>
+                        <a target="_blank" href={topic.link} class={topic.arrival && "has-text-danger has-text-weight-semibold"}>
                         {topic.title}
                         </a>
                     </li>
@@ -107,13 +107,13 @@ class Newslist extends React.Component {
                     <div class="column">
                         <button class="button is-primary is-outlined" onClick={this.startService}>start</button>
                     </div>
-                    <div class="column">
+                    <div class="column has-text-right">
                         <div class="tag is-info">
                             {this.state.history.length}ニュース
                         </div>
                     </div>
                 </div>
-                <div id="news" class="columns is-multiline">
+                <div id="news" class="columns is-multiline is-gapless">
                     {ols}
                 </div>
             </div>
