@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . "/vendor/autoload.php");
 
-$url = "https://news.yahoo.co.jp/pickup/rss.xml";
+$url = "https://news.yahoo.co.jp/rss";
 
 $opt = [
     "ssl" => [

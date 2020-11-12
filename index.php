@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <title>newspeaker</title>
-    <link rel="shortcut icon" href="https://tm.cranpun-tools.ml/wp-content/themes/themeorg/favicon.ico" />
+    <link rel="shortcut icon" href="https://tm.cranpun-tool.ml/wp-content/themes/themeorg/favicon.ico" />
 
     <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no">
 
