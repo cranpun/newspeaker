@@ -43,22 +43,30 @@ class Newslist extends React.Component {
 
             // // 発声
             const voices = window.speechSynthesis.getVoices();
-            if(false) {
+            window.speechSynthesis.cancel(); // 一旦クリア
+            this.doSpeak(`${data.topics.length}件のニュースです。`);
+
+            if(true) {
                 // 個別にしゃべる
-                for(let topic of data.topics) {
-                    const utt = new SpeechSynthesisUtterance(topic.title);
-                    utt.voice = voices[57]; // google
-                    window.speechSynthesis.speak(utt);
+                for(const [idx, topic] of Object.entries(data.topics)) {
+                    this.doSpeak(`${parseInt(idx) + 1}件目、${topic.speak}。`);
                 }
+                this.doSpeak(`以上、${data.topics.length}件のニュースでした。`);
             } else {
                 // 生成したしゃべる用のテキストをしゃべる
                 const utt = new SpeechSynthesisUtterance(data.speaktext);
                 utt.voice = voices[0]; // default
                 utt.volume = 0.3;
-                utt.rate = 0.4;
+                utt.rate = 1;
+                window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utt);
             }
-        });
+        }.bind(this));
+    }
+
+    doSpeak(text) {
+        const utt = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(utt);
     }
 
     startService() {

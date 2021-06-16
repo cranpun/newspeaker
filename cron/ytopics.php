@@ -22,10 +22,14 @@ $feed->init();
 $items = $feed->get_items();
 
 // 補正用のデータ
-$space = "。　。　";
+$space = "、";
 $adjs = [
     [
         "search" => " ",
+        "replace" => $space,
+    ],
+    [
+        "search" => "\s",
         "replace" => $space,
     ],
     [
@@ -43,23 +47,26 @@ $viewrep = [
 $topics = [];
 $speaktext = count($items) . "件のニュースです";
 foreach($items as $pos => $item) {
-    $title = $item->get_title();
 
     // 見栄えの調整
+    $title = $item->get_title();
     foreach($viewrep as $r) {
         $title = mb_ereg_replace($r["search"], $r["replace"], $title);
     }
-    // 表示用のデータ
-    $topics[] = [
-        "title" => $title,
-        "link" => $item->get_link(),
-    ];
 
     // しゃべる用のデータ
     // // 空白を広げる処置
+    $speak = $item->get_title();
     foreach($adjs as $adj) {
-        $title = mb_ereg_replace($adj["search"], $adj["replace"], $title);
+        $speak = mb_ereg_replace($adj["search"], $adj["replace"], $speak);
     }
+
+    // 表示用のデータ
+    $topics[] = [
+        "title" => $title,
+        "speak" => $speak,
+        "link" => $item->get_link(),
+    ];
 
     // // 結合
     $speaktext .= "{$space}{$space}" . ($pos + 1) . "件目{$space}{$title}";
