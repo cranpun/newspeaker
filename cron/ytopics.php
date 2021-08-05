@@ -25,6 +25,14 @@ $items = $feed->get_items();
 $space = "、";
 $adjs = [
     [
+        "search" => "「",
+        "replace" => $space,
+    ],
+    [
+        "search" => "」",
+        "replace" => $space,
+    ],
+    [
         "search" => " ",
         "replace" => $space,
     ],
