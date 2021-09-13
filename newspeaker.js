@@ -56,7 +56,7 @@ class Newslist extends React.Component {
                 // 生成したしゃべる用のテキストをしゃべる
                 const utt = new SpeechSynthesisUtterance(data.speaktext);
                 utt.voice = voices[0]; // default
-                utt.volume = 0.3;
+                utt.volume = 1;
                 utt.rate = 1;
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utt);
@@ -66,6 +66,10 @@ class Newslist extends React.Component {
 
     doSpeak(text) {
         const utt = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        utt.voice = voices[0]; // default
+        utt.volume = 0.75;
+        utt.rate = 1;
         window.speechSynthesis.speak(utt);
     }
 

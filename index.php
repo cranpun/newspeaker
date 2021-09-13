@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
 
     <!-- original -->
-    <script type="text/babel" src="./newspeaker.js"></script>
+    <script type="text/babel" src="./newspeaker.js?v=<?= filemtime('./newspeaker.js') ?>"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 
