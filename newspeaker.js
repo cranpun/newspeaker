@@ -102,7 +102,7 @@ class Newslist extends React.Component {
                                 updated_at : {hist.updated_at}
                             </div>
                         </div>
-                        <div class="card-content">
+                        <div class="card-content card-hour">
                             <div class="content">
                                 <ol class="topics">
                                     {lis}
